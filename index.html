@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Isekai Story Taller</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<script src="scripts/game.js"></script>
+		<style>			
+			body
+			{
+				background-color: black;
+				background-size: cover;
+				color: white;
+				text-align: center;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none; 
+				-khtml-user-select: none;
+				-moz-user-select: none; 
+				-ms-user-select: none;
+				user-select: none;
+				margin: 0px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<canvas id="game" width="320" height="640"></canvas>
+		<script defer>
+			let game = new Game()
+			
+			let player = game.addEntity({
+				"Position" : {x : 0, y : 0},
+			})
+			
+			let enemy = game.addEntity({
+				"Position" : {x : 10, y : 20},
+				"MotionTarget" : player,
+			})
+			
+			for(let i in game.entities)
+			{
+				console.log(i, game.entities[i])
+			}
+		</script>
+	</body>
+</html>
