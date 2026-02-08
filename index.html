@@ -4,30 +4,87 @@
 		<title>Isekai Story Taller</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
-		<script src="scripts/game.js"></script>
 		<style>			
-			body
+			body 
 			{
-				background-color: black;
-				background-size: cover;
-				color: white;
-				text-align: center;
-				-webkit-touch-callout: none;
-				-webkit-user-select: none; 
-				-khtml-user-select: none;
-				-moz-user-select: none; 
-				-ms-user-select: none;
-				user-select: none;
-				margin: 0px;
+			  margin: 0;
+			  padding: 0;
+			  overflow: hidden; /* Полностью блокирует скролл */
+			  background-color: #000; /* Чёрный фон */
+			  color: #fff; /* Белый текст (если понадобится) */
+			  
+			  /* Блокировка выделения и контекстных меню */
+			  -webkit-touch-callout: none;
+			  -webkit-user-select: none;
+			  -khtml-user-select: none;
+			  -moz-user-select: none;
+			  -ms-user-select: none;
+			  user-select: none;
+			  
+			  /* Убираем скроллбары во всех браузерах */
+			  -ms-overflow-style: none;  /* IE и Edge */
+			  scrollbar-width: none;     /* Firefox */
 			}
+
+			/* Скрываем скроллбар в WebKit-браузерах (Chrome, Safari) */
+			body::-webkit-scrollbar 
+			{
+			  display: none;
+			}
+
+			/* Стили для canvas — основа игровой графики */
+			canvas 
+			{
+			  display: block;
+			  position: fixed; /* Фиксируем на весь экран */
+			  top: 0;
+			  left: 0;
+			  width: 100vw;  /* 100% ширины окна */
+			  height: 100vh; /* 100% высоты окна */
+			  border: none;
+			  image-rendering: pixelated; /* Для пиксель-арт стилей (опционально) */
+			  touch-action: none; /* Блокирует жесты касания */
+			  cursor: default; /* Убираем курсор (если не нужен) */
+			}
+
+			/* Дополнительно: предотвращение выделения при клике на canvas */
+			canvas::selection 
+			{
+			  background: transparent;
+			}
+
+			/* Оптимизация рендеринга (для плавной анимации) */
+			@media (prefers-reduced-motion: no-preference) 
+			{
+			  canvas 
+			  {
+				will-change: transform; /* Оптимизирует аппаратное ускорение */
+			  }
+			}
+
 			
 		</style>
+		<script src="scripts/game.js"></script>
+		<script src="scripts/managers/canvas_manager.js"></script>
+		<script src="scripts/managers/events_manager.js"></script>
+		<script src="scripts/managers/resources_manager.js"></script>
 	</head>
 	<body>
-		<canvas id="game" width="320" height="640"></canvas>
+		<canvas id="game"></canvas>
 		<script defer>
+			
+			// Init game
 			let game = new Game()
 			
+			// Init managers
+			CanvasManager.init()
+			EventsManager.init()
+			ResourcesManager.init()
+			
+			// Loading images
+			ResourcesManager.loadTexture("rock", "textures/tilesets/rock.png")
+
+			// Entities
 			let player = game.addEntity({
 				"Position" : {x : 0, y : 0},
 			})
@@ -36,11 +93,6 @@
 				"Position" : {x : 10, y : 20},
 				"MotionTarget" : player,
 			})
-			
-			for(let i in game.entities)
-			{
-				console.log(i, game.entities[i])
-			}
 		</script>
 	</body>
 </html>
