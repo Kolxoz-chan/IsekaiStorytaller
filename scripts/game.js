@@ -10,10 +10,14 @@ class Game
 	
 	update()
 	{
+		CanvasManager.clear()
 		for (const system of this.systems) 
 		{
 			system.update(this)
 		}
+		CanvasManager.resetTransform()
+		
+		setTimeout(() => {this.update()}, 1000 / 60)
 	}
 	
 	addEntity(components = {})
@@ -30,6 +34,11 @@ class Game
 		
 		return id
 	} 
+	
+	getEntity(id)
+	{
+		return this.entities.get(id)
+	}
 	
 	addComponent(entity, component, data)
 	{
@@ -48,9 +57,29 @@ class Game
 		this.components.get(component).add(entity)
 	}
 	
+	query(comps_list = [])
+	{
+		let entities = new Set()
+		if(comps_list.length > 0)
+		{
+			entities = this.components.get(comps_list[0])
+			for(let i=1; i<comps_list.length; i++)
+			{
+				let name = comps_list[i]
+				entities = entities.intersection(this.components.get(name)) 
+			}
+		}
+		return entities
+	}
+	
 	registerSystem(system)
 	{
 		this.systems.push(system)
-		system.init()
+		system.init(this)
+	}
+	
+	start()
+	{
+		this.update()
 	}
 }

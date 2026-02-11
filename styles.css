@@ -1,0 +1,56 @@
+body 
+{
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Полностью блокирует скролл */
+  background-color: #000; /* Чёрный фон */
+  color: #fff; /* Белый текст (если понадобится) */
+  
+  /* Блокировка выделения и контекстных меню */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  /* Убираем скроллбары во всех браузерах */
+  -ms-overflow-style: none;  /* IE и Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Скрываем скроллбар в WebKit-браузерах (Chrome, Safari) */
+body::-webkit-scrollbar 
+{
+  display: none;
+}
+
+/* Стили для canvas — основа игровой графики */
+canvas 
+{
+  display: block;
+  position: fixed; /* Фиксируем на весь экран */
+  top: 0;
+  left: 0;
+  width: 100vw;  /* 100% ширины окна */
+  height: 100vh; /* 100% высоты окна */
+  border: none;
+  image-rendering: pixelated; /* Для пиксель-арт стилей (опционально) */
+  touch-action: none; /* Блокирует жесты касания */
+  cursor: default; /* Убираем курсор (если не нужен) */
+}
+
+/* Дополнительно: предотвращение выделения при клике на canvas */
+canvas::selection 
+{
+  background: transparent;
+}
+
+/* Оптимизация рендеринга (для плавной анимации) */
+@media (prefers-reduced-motion: no-preference) 
+{
+  canvas 
+  {
+	will-change: transform; /* Оптимизирует аппаратное ускорение */
+  }
+}

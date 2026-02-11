@@ -25,6 +25,25 @@ class CanvasManager
 	
 	static drawImage(img, x, y, w, h)
 	{
-		this.context.drawImage(img, x, y, w, h)
+		//this.context.save()
+		//this.context.translate(x, y)
+		//this.context.rotate(angle)
+		//this.context.translate(-x, -y)
+		
+		this.context.drawImage(img, x-w/2, y-h/2, w, h)
+		
+		//this.resetTransform()
+	}
+	
+	static setCameraCenter(x, y)
+	{	
+		
+		this.context.translate(-x + this.canvas.width/2, -y + this.canvas.height/2)
+		console.log(-x + this.canvas.width/2, -y + this.canvas.height/2)
+	}
+	
+	static resetTransform()
+	{
+		this.context.restore()
 	}
 }
