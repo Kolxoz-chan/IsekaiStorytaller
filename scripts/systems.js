@@ -155,11 +155,15 @@ class GridMotionSystem extends BaseSystem
 			let grid = components.get("GridPosition")
 			let velocity = components.get("Velocity")
 			
-			if (velocity.dx != 0) grid.x += velocity.dx
-			else grid.x = MathManager.lerp(grid.x, Math.round(grid.x), 0.1)
+			grid.x += velocity.dx
+			grid.y += velocity.dy
 			
-			if (velocity.dy != 0) grid.y += velocity.dy
-			else grid.y = MathManager.lerp(grid.y, Math.round(grid.y), 0.1)
+			if (velocity.dx == 0 && velocity.dy == 0)
+			{
+				let pos = MathManager.moveTo(grid, {x : Math.round(grid.x), y : Math.round(grid.y)}, 0.1)
+				grid.x = pos.x
+				grid.y = pos.y
+			}
 		}
 	}
 }
@@ -168,17 +172,41 @@ class GridCollisionSystem extends BaseSystem
 {
 	update(game)
 	{
-		let entities = game.query(["GridPosition", "GridCellSize", "Velocity"])
+		let entities = game.query(["GridCollider", "GridPosition", "Velocity"])
 		for (let ent_1 of entities)
 		{
 			let components_1 = game.getEntity(ent_1)
+			
 			for (let ent_2 of entities)
 			{
 				if(ent_1 == ent_2) continue;
-				
 				let components_2 = game.getEntity(ent_2)
 				
+				let velocity = components_2.get("Velocity")
+				let grid_1 = components_1.get("GridPosition")
+				let grid_2 = components_2.get("GridPosition")
+
+				 
+				let rect_1 = {
+					x : grid_1.x, 
+					y : grid_1.y, 
+					width : 1, 
+					height : 1
+				}
 				
+				let rect_2 = {
+					x : grid_2.x, 
+					y : grid_2.y, 
+					width : 1, 
+					height : 1
+				}
+				
+				if(MathManager.isIntersectsRects(rect_1, rect_2) || MathManager.isIntersectsRects(rect_2, rect_1))
+				{
+					console.log(rect_1, rect_2) 
+					grid_2.x -= velocity.dx
+					grid_2.y -= velocity.dy
+				}
 			}
 		}
 	}
