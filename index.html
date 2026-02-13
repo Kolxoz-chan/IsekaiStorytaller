@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="styles.css">
 		<script src="scripts/game.js"></script>
 		<script src="scripts/systems.js"></script>
+		<script src="scripts/managers/math_manager.js"></script>
 		<script src="scripts/managers/canvas_manager.js"></script>
 		<script src="scripts/managers/events_manager.js"></script>
 		<script src="scripts/managers/resources_manager.js"></script>
@@ -25,26 +26,46 @@
 			
 			// System registration
 			game.registerSystem(new CameraContollerSystem())
+			game.registerSystem(new ChunkRenderSystem())
 			game.registerSystem(new TextureRenderSystem())
 			game.registerSystem(new PlayerContollerSystem())
-			
+			game.registerSystem(new GridMotionSystem())
+			game.registerSystem(new GridPositionSystem())
 			
 			// Loading images
 			ResourcesManager.loadTexture("rock_tileset", "textures/tilesets/rock.png")
 			ResourcesManager.loadTexture("test_entity", "textures/entities/test.png")
+			ResourcesManager.loadTexture("test_tile", "textures/void.png")
+			
+			// Map
+			let chunk = game.addEntity({
+				"Position" : {x : 0, y : 0},
+				"Chunk" : {cols : 16, rows : 16, tile_width : 64, tile_height : 64},
+				"ChunkFilling" : {texture : "test_tile"},
+				
+			})
 			
 			// Entities
 			let player = game.addEntity({
-				"Position" : {x : 10, y : 10}, 
-				"Texture" : {texture : "test_entity"},
-				"Player" : {},
-				"Speed" : {speed : 2},
-				"Camera" : {},
+				"Position" : {x : 0, y : 0}, 
+				"Velocity" : {dx : 0, dy : 0},
+				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				"MotionController" : {reset_velocity : true, diagonal_movement : false},
+				"Speed" : {speed : 0.05},
+				"CameraController" : {lerp : 0.1},
+				"GridPosition" : {x : 10, y : -2},
+				"GridCellSize" : {width : 64, height : 64},
+				"GridCollider" : {},
 			})
 			
 			let enemy = game.addEntity({
-				"Position" : {x : 350, y : 250},
-				"Texture" : {texture : "test_entity"},
+				"Position" : {x : 0, y : 0},
+				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				"Velocity" : {dx : 0, dy : 0},
+				"Speed" : {speed : 0.05},
+				"GridCellSize" : {width : 64, height : 64},
+				"GridPosition" : {x : 5, y : 3, cell_width : 64, cell_height : 64},
+				"GridCollider" : {},
 			})
 			
 			game.start()

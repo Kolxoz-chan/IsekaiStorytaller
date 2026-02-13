@@ -15,7 +15,6 @@ class Game
 		{
 			system.update(this)
 		}
-		CanvasManager.resetTransform()
 		
 		setTimeout(() => {this.update()}, 1000 / 60)
 	}

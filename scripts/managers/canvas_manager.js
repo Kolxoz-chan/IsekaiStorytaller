@@ -4,6 +4,7 @@ class CanvasManager
 	{
 		this.canvas = document.getElementById("game")
 		this.context = this.canvas.getContext("2d")
+		this.camera = {x:0, y:0}
 		
 		window.addEventListener("load", (event) =>
 		{
@@ -25,25 +26,14 @@ class CanvasManager
 	
 	static drawImage(img, x, y, w, h)
 	{
-		//this.context.save()
-		//this.context.translate(x, y)
-		//this.context.rotate(angle)
-		//this.context.translate(-x, -y)
-		
-		this.context.drawImage(img, x-w/2, y-h/2, w, h)
-		
-		//this.resetTransform()
+		this.context.drawImage(img, x - this.camera.x - w/2, y - this.camera.y - h/2, w, h)
 	}
 	
 	static setCameraCenter(x, y)
 	{	
-		
-		this.context.translate(-x + this.canvas.width/2, -y + this.canvas.height/2)
-		console.log(-x + this.canvas.width/2, -y + this.canvas.height/2)
-	}
-	
-	static resetTransform()
-	{
-		this.context.restore()
+		this.camera = {
+			x : x - this.canvas.width / 20, 
+			y : y - this.canvas.height / 20
+			}
 	}
 }
