@@ -34,6 +34,6 @@ class CanvasManager
 		this.camera = {
 			x : x - this.canvas.width / 20, 
 			y : y - this.canvas.height / 20
-			}
+		}
 	}
 }

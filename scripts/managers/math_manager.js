@@ -47,13 +47,11 @@ class MathManager
 		
 		if(len > speed)
 		{
-			let dx = (target.x - pos.x) * speed
-			let dy = (target.y - pos.y) * speed
+			let dx = (target.x - pos.x) / len * speed
+			let dy = (target.y - pos.y) / len * speed
+			
 			return {x : pos.x + dx, y : pos.y + dy}
 		}
-		else
-		{
-			return target
-		}
+		return target
 	}
 }

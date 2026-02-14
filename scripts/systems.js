@@ -130,7 +130,43 @@ class GridPositionSystem extends BaseSystem
 {
 	update(game)
 	{
-		let entities = game.query(["GridPosition", "GridCellSize", "Position"])
+		let entities = game.query(["GridPosition", "GridCellSize"])
+		for (let id of entities)
+		{
+			let components = game.getEntity(id)
+			let grid = components.get("GridPosition")
+			let size = components.get("GridCellSize")
+			
+			let abs_pos = {x : grid.x * size.width, y : grid.y * size.height}
+			
+			if(!components.has("Position"))
+			{
+				game.addComponent(id, "Position", abs_pos)
+			}
+			let position = components.get("Position")
+			
+			if(components.has("Speed"))
+			{
+				let speed = components.get("Speed")
+				let pos = MathManager.moveTo(position, abs_pos, speed.speed)
+				
+				position.x = pos.x
+				position.y = pos.y
+			}
+			else
+			{
+				position.x = abs_pos.x
+				position.y = abs_pos.y
+			}
+		}
+	}
+}
+
+class GridControllerSystem extends BaseSystem
+{
+	update(game)
+	{
+		let entities = game.query(["GridController", "GridPosition", "GridCellSize", "Position"])
 		for (let id of entities)
 		{
 			let components = game.getEntity(id)
@@ -138,31 +174,25 @@ class GridPositionSystem extends BaseSystem
 			let grid = components.get("GridPosition")
 			let size = components.get("GridCellSize")
 			
-			position.x = grid.x * size.width
-			position.y = grid.y * size.height
-		}
-	}
-}
-
-class GridMotionSystem extends BaseSystem
-{
-	update(game)
-	{
-		let entities = game.query(["GridPosition", "Velocity"])
-		for (let id of entities)
-		{
-			let components = game.getEntity(id)
-			let grid = components.get("GridPosition")
-			let velocity = components.get("Velocity")
+			let pos_x = grid.x * size.width
+			let pos_y = grid.y * size.height
+			let cond = (position.x == pos_x) && (position.y == pos_y)
 			
-			grid.x += velocity.dx
-			grid.y += velocity.dy
-			
-			if (velocity.dx == 0 && velocity.dy == 0)
+			if (EventsManager.isKeyPressed("KeyW") && cond) 
 			{
-				let pos = MathManager.moveTo(grid, {x : Math.round(grid.x), y : Math.round(grid.y)}, 0.1)
-				grid.x = pos.x
-				grid.y = pos.y
+				grid.y -= 1
+			}
+			else if (EventsManager.isKeyPressed("KeyA") && cond) 
+			{
+				grid.x -= 1
+			}
+			else if (EventsManager.isKeyPressed("KeyS") && cond) 
+			{
+				grid.y += 1
+			}
+			else if (EventsManager.isKeyPressed("KeyD") && cond) 
+			{
+				grid.x += 1
 			}
 		}
 	}
@@ -172,42 +202,31 @@ class GridCollisionSystem extends BaseSystem
 {
 	update(game)
 	{
-		let entities = game.query(["GridCollider", "GridPosition", "Velocity"])
+		let entities = game.query(["GridPosition", "GridCellSize", "Position"])
 		for (let ent_1 of entities)
 		{
 			let components_1 = game.getEntity(ent_1)
+			let grid_1 = components_1.get("GridPosition")
 			
 			for (let ent_2 of entities)
 			{
-				if(ent_1 == ent_2) continue;
-				let components_2 = game.getEntity(ent_2)
-				
-				let velocity = components_2.get("Velocity")
-				let grid_1 = components_1.get("GridPosition")
-				let grid_2 = components_2.get("GridPosition")
-
-				 
-				let rect_1 = {
-					x : grid_1.x, 
-					y : grid_1.y, 
-					width : 1, 
-					height : 1
-				}
-				
-				let rect_2 = {
-					x : grid_2.x, 
-					y : grid_2.y, 
-					width : 1, 
-					height : 1
-				}
-				
-				if(MathManager.isIntersectsRects(rect_1, rect_2) || MathManager.isIntersectsRects(rect_2, rect_1))
+				if(ent_1 != ent_2)
 				{
-					console.log(rect_1, rect_2) 
-					grid_2.x -= velocity.dx
-					grid_2.y -= velocity.dy
+					let components_2 = game.getEntity(ent_2)
+					let grid_2 = components_2.get("GridPosition")
+					
+					if(grid_1.x == grid_2.x && grid_1.y == grid_2.y)
+					{
+						let position_1 = components_1.get("Position")
+						let size_1 = components_1.get("GridCellSize")
+						grid_1.x = Math.round(position_1.x / size_1.width)
+						grid_1.y = Math.round(position_1.y / size_1.height)
+						position_1.x = grid_1.x * size_1.width
+						position_1.y = grid_1.y * size_1.height
+					}
 				}
 			}
+			
 		}
 	}
 }

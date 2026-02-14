@@ -35,7 +35,7 @@ canvas
   width: 100vw;  /* 100% ширины окна */
   height: 100vh; /* 100% высоты окна */
   border: none;
-  image-rendering: pixelated; /* Для пиксель-арт стилей (опционально) */
+  /*image-rendering: pixelated;  Для пиксель-арт стилей (опционально) */
   touch-action: none; /* Блокирует жесты касания */
   cursor: default; /* Убираем курсор (если не нужен) */
 }

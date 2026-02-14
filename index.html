@@ -28,10 +28,9 @@
 			game.registerSystem(new CameraContollerSystem())
 			game.registerSystem(new ChunkRenderSystem())
 			game.registerSystem(new TextureRenderSystem())
-			game.registerSystem(new PlayerContollerSystem())
-			game.registerSystem(new GridMotionSystem())
-			game.registerSystem(new GridCollisionSystem())
+			game.registerSystem(new GridControllerSystem())
 			game.registerSystem(new GridPositionSystem())
+			game.registerSystem(new GridCollisionSystem())
 			
 			// Loading images
 			ResourcesManager.loadTexture("rock_tileset", "textures/tilesets/rock.png")
@@ -48,25 +47,21 @@
 			
 			// Entities
 			let player = game.addEntity({
-				"Position" : {x : 0, y : 0}, 
-				"Velocity" : {dx : 0, dy : 0},
-				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
-				"MotionController" : {reset_velocity : true, diagonal_movement : false},
-				"Speed" : {speed : 0.05},
-				"CameraController" : {lerp : 0.1},
 				"GridPosition" : {x : 10, y : -2},
 				"GridCellSize" : {width : 64, height : 64},
+				"GridController" : {},
 				"GridCollider" : {},
+				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				"Speed" : {speed : 3},
+				"CameraController" : {lerp : 0.1},
 			})
 			
 			let enemy = game.addEntity({
-				"Position" : {x : 0, y : 0},
-				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
-				"Velocity" : {dx : 0, dy : 0},
-				"Speed" : {speed : 0.05},
 				"GridCellSize" : {width : 64, height : 64},
 				"GridPosition" : {x : 5, y : 3},
 				"GridCollider" : {},
+				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				"Speed" : {speed : 3},
 			}) 
 			
 			game.start()
