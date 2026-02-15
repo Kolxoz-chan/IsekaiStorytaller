@@ -6,28 +6,20 @@ class BaseSystem
 	}
 }
 
-class TextureRenderSystem extends BaseSystem
+class RenderSystem extends BaseSystem
 {
 	update(game)
 	{
-		let entities = game.query(["Texture", "Position"])
+		let entities = game.query(["Visual"])
 		for (let id of entities)
 		{
-			let camera = CanvasManager.camera
 			let components = game.getEntity(id)
-			let position = components.get("Position")
-			let texture = components.get("Texture")
-			let img = ResourcesManager.getTexture(texture.texture)
+			let visual = components.get("Visual")
 			
-			if(texture.offset)
+			if(visual.visible && visual.strategy)
 			{
-				position = {
-					x : position.x + texture.offset.x,
-					y : position.y + texture.offset.y
-				}
+				
 			}
-			
-			CanvasManager.drawImage(img, position.x, position.y, img.width, img.height)
 		}
 	}
 }

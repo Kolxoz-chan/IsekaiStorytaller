@@ -26,11 +26,11 @@
 			
 			// System registration
 			game.registerSystem(new CameraContollerSystem())
-			game.registerSystem(new ChunkRenderSystem())
-			game.registerSystem(new TextureRenderSystem())
 			game.registerSystem(new GridControllerSystem())
 			game.registerSystem(new GridPositionSystem())
 			game.registerSystem(new GridCollisionSystem())
+			game.registerSystem(new ChunkRenderSystem())
+			game.registerSystem(new RenderSystem())
 			
 			// Loading images
 			ResourcesManager.loadTexture("rock_tileset", "textures/tilesets/rock.png")
@@ -51,7 +51,10 @@
 				"GridCellSize" : {width : 64, height : 64},
 				"GridController" : {},
 				"GridCollider" : {},
-				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+			
+				"Visual" : {strategy : "SpriteRender", visible=true},
+				"SpriteVisual" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				
 				"Speed" : {speed : 3},
 				"CameraController" : {lerp : 0.1},
 			})
@@ -60,7 +63,10 @@
 				"GridCellSize" : {width : 64, height : 64},
 				"GridPosition" : {x : 5, y : 3},
 				"GridCollider" : {},
-				"Texture" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				
+				"Visual" : {strategy : "SpriteRender", visible=true},
+				"SpriteVisual" : {texture : "test_entity", offset : {x : 0, y : -50}},
+				
 				"Speed" : {speed : 3},
 			}) 
 			
