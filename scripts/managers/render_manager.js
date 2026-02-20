@@ -7,7 +7,7 @@ class RenderManager
 	
 	static addStrategy(name, obj)
 	{
-		this.textures_list[name] = obj
+		this.strategies_list[name] = obj
 	}
 	
 	static getStrategy(name)
@@ -44,7 +44,7 @@ class SpriteRenderStrategy extends RenderStrategy
 	{
 		let components = game.getEntity(entity)
 		let position = components.get("Position")
-		let texture = components.get("Texture")
+		let texture = components.get("SpriteVisual")
 		let img = ResourcesManager.getTexture(texture.texture)
 		
 		if(texture.offset)

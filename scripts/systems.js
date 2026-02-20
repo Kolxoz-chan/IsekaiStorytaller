@@ -18,7 +18,7 @@ class RenderSystem extends BaseSystem
 			
 			if(visual.visible && visual.strategy)
 			{
-				
+				RenderManager.execStrategy(visual.strategy, game, id)
 			}
 		}
 	}
